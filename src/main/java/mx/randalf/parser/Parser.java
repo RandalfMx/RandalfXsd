@@ -71,10 +71,11 @@ public class Parser extends DOMParser {
 			System.out.println("no args");
 	}
 
-	public static void checkFile(File f) throws SAXParseException {
+	public static boolean checkFile(File f) throws SAXParseException {
 		ParserException pe = new ParserException();
 		Parser parser = new Parser();
 		SAXParseException saxPe = null;
+		boolean esito = false;
 		try {
 			if (f.getName().toUpperCase().endsWith(".XML")) {
 				log.debug("Elaboro il File: " + f.getPath());
@@ -90,13 +91,14 @@ public class Parser extends DOMParser {
 								+ saxPe.getMessage());
 					}
 				} else {
+					esito = true;
 					log.debug(" OK");
 				}
 			}
 		} catch (PubblicaException e) {
 			log.error(e);
 		}
-
+		return esito;
 	}
 
 	/**
