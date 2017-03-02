@@ -129,8 +129,7 @@ public class WriteXsd<C> {
 		{
 			log.debug("writeToString()");
 
-			log.debug("Utente.package: "+persistentClass.getPackage().getName());
-			jc = JAXBContext.newInstance(persistentClass.getPackage().getName());
+			jc = initJAXBContext();
 
 			log.debug("jc.createMarshaller();");
 			m = jc.createMarshaller();
@@ -156,6 +155,15 @@ public class WriteXsd<C> {
 			log.error(e);
 			throw new XsdException(e.getMessage(), e);
 		}
+	}
+
+	protected JAXBContext initJAXBContext() throws JAXBException{
+		JAXBContext jc = null;
+
+		log.debug("Utente.package: "+persistentClass.getPackage().getName());
+		jc = JAXBContext.newInstance(persistentClass.getPackage().getName());
+
+		return jc;
 	}
 
 	/**

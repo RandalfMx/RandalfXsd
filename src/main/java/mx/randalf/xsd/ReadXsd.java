@@ -112,8 +112,7 @@ public class ReadXsd<C> extends WriteXsd<C> {
 			log.debug("read(InputStream "+input+")");
 			if (input != null)
 			{
-				log.debug("Richieste.package: "+persistentClass.getPackage().getName());
-				jc = JAXBContext.newInstance(persistentClass.getPackage().getName());
+				jc = initJAXBContext();
 
 				log.debug("jc.createUnmarshaller");
 				u = jc.createUnmarshaller();
