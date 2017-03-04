@@ -135,4 +135,63 @@ public class ReadXsd<C> extends WriteXsd<C> {
 		return obj;
 	}
 
+	public boolean check(String fXml) throws XsdException{
+		boolean ris = false;
+		C obj = null;
+		
+		try {
+			obj = read(fXml);
+			if (obj != null){
+				ris = true;
+			}
+		} catch (XsdException e) {
+			throw e;
+		}
+		return ris;
+	}
+
+	public boolean check(File fXml) throws XsdException{
+		boolean ris = false;
+		C obj = null;
+		
+		try {
+			obj = read(fXml);
+			if (obj != null){
+				ris = true;
+			}
+		} catch (XsdException e) {
+			throw e;
+		}
+		return ris;
+	}
+
+	public boolean check(OutputStream fXml) throws XsdException{
+		boolean ris = false;
+		C obj = null;
+		
+		try {
+			obj = read(fXml);
+			if (obj != null){
+				ris = true;
+			}
+		} catch (XsdException e) {
+			throw e;
+		}
+		return ris;
+	}
+
+	public boolean check(InputStream fXml) throws XsdException{
+		boolean ris = false;
+		C obj = null;
+		
+		try {
+			obj = read(fXml);
+			if (obj != null){
+				ris = true;
+			}
+		} catch (XsdException e) {
+			throw e;
+		}
+		return ris;
+	}
 }
