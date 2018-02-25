@@ -65,7 +65,7 @@ public class ParserException implements ErrorHandler {
 	 */
 	public void warning(SAXParseException ex) throws SAXException {
 		numWar++;
-		log.error("Warning: " + ex.getMessage());
+		log.error("\n"+"Warning: " + ex.getMessage());
 		handleError(ex, PubblicaException.WARNING);
 	}
 
@@ -75,7 +75,7 @@ public class ParserException implements ErrorHandler {
 	 */
 	public void error(SAXParseException ex) throws SAXException {
 		numErr++;
-		log.error("Error: " + ex.getMessage());
+		log.error("\n"+"Error: " + ex.getMessage());
 		handleError(ex, PubblicaException.ERROR);
 	}
 
@@ -85,7 +85,7 @@ public class ParserException implements ErrorHandler {
 	 */
 	public void fatalError(SAXParseException ex) throws SAXException {
 		numErr++;
-		log.error("Fatal Error: " + ex.getMessage());
+		log.error("\n"+"Fatal Error: " + ex.getMessage());
 		handleError(ex, PubblicaException.FATAL_ERROR);
 	}
 

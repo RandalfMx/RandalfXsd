@@ -49,7 +49,7 @@ public class ReadXsd<C> extends WriteXsd<C> {
 		} catch (XsdException e) {
 			throw e;
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		} finally {
 			try {
@@ -57,7 +57,7 @@ public class ReadXsd<C> extends WriteXsd<C> {
 					bais.close();
 				}
 			} catch (IOException e) {
-				log.error(e);
+				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
 		}
@@ -74,12 +74,12 @@ public class ReadXsd<C> extends WriteXsd<C> {
 				obj = read(fis);
 			}
 		} catch (FileNotFoundException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		} catch (XsdException e) {
 			throw e;
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		} finally {
 			try {
@@ -87,7 +87,7 @@ public class ReadXsd<C> extends WriteXsd<C> {
 					fis.close();
 				}
 			} catch (IOException e) {
-				log.error(e);
+				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
 		}
@@ -109,27 +109,27 @@ public class ReadXsd<C> extends WriteXsd<C> {
 
 		try
 		{
-			log.debug("read(InputStream "+input+")");
+			log.debug("\n"+"read(InputStream "+input+")");
 			if (input != null)
 			{
 				jc = initJAXBContext();
 
-				log.debug("jc.createUnmarshaller");
+				log.debug("\n"+"jc.createUnmarshaller");
 				u = jc.createUnmarshaller();
 
-				log.debug("u.unmarchal("+input+")");
+				log.debug("\n"+"u.unmarchal("+input+")");
 				tmp = u.unmarshal(input);
 				obj = (C) tmp;
 			}
 		}
 		catch (JAXBException e)
 		{
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		}
 		catch (Exception e)
 		{
-			log.error(e);
+			log.error(e.getMessage(),e);
 			throw new XsdException(e.getMessage(), e);
 		}
 		return obj;

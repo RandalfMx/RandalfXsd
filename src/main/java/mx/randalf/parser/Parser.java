@@ -58,13 +58,13 @@ public class Parser extends DOMParser {
 					f1 = f.listFiles();
 					for (int y = 0; y < f1.length; y++) {
 						if ((y % 100) == 0)
-							log.info("File: " + y + "/" + f1.length);
+							log.info("\n"+"File: " + y + "/" + f1.length);
 						f = f1[y];
 						if (f.isFile()) {
 							checkFile(f);
 						}
 					}
-					log.info("File Analisi: " + f1.length);
+					log.info("\n"+"File Analisi: " + f1.length);
 				}
 			}
 		} else
@@ -78,25 +78,25 @@ public class Parser extends DOMParser {
 		boolean esito = false;
 		try {
 			if (f.getName().toUpperCase().endsWith(".XML")) {
-				log.debug("Elaboro il File: " + f.getPath());
+				log.debug("\n"+"Elaboro il File: " + f.getPath());
 				parser.eseguiParser(f.getPath(), pe);
 				if (pe.getNumErr() > 0) {
-					log.error("Elaboro il File: " + f.getPath());
-					log.error("Num Err.: " + pe.getNumErr());
+					log.error("\n"+"Elaboro il File: " + f.getPath());
+					log.error("\n"+"Num Err.: " + pe.getNumErr());
 					Vector<SAXParseException> err = pe.getMsgErr();
 					for (int x = 0; x < err.size(); x++) {
 						saxPe = (SAXParseException) err.get(x);
-						log.debug("Line: " + saxPe.getLineNumber() + " Col: "
+						log.debug("\n"+"Line: " + saxPe.getLineNumber() + " Col: "
 								+ saxPe.getColumnNumber() + " Msg: "
 								+ saxPe.getMessage());
 					}
 				} else {
 					esito = true;
-					log.debug(" OK");
+					log.debug("\n"+" OK");
 				}
 			}
 		} catch (PubblicaException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		}
 		return esito;
 	}
@@ -232,13 +232,13 @@ public class Parser extends DOMParser {
 			this.setErrorHandler(errors);
 			this.parse(fileXML);
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} catch (SAXParseException e) {
 			throw e;
 		} catch (org.xml.sax.SAXException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		}
 	}
 
@@ -286,12 +286,12 @@ public class Parser extends DOMParser {
 			this.setErrorHandler(errors);
 			this.parse(testoXML);
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		} catch (org.xml.sax.SAXException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new PubblicaException(e.getMessage());
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		}
 	}
 }

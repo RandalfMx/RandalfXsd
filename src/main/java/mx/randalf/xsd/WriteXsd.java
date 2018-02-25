@@ -72,7 +72,7 @@ public class WriteXsd<C> {
 			fos = new FileOutputStream(fXml);
 			write(obj, fos, namespacePrefixMapper, listener, xmlAdapter, schemaLocation);
 		} catch (FileNotFoundException e) {
-			log.error(e);
+			log.error(e.getMessage(),e);
 			throw new XsdException(e.getMessage(), e);
 		}
 		finally
@@ -83,7 +83,7 @@ public class WriteXsd<C> {
 					fos.close();
 				}
 			} catch (IOException e) {
-				log.error(e);
+				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
 		}
@@ -104,7 +104,7 @@ public class WriteXsd<C> {
 					baos.flush();
 				}
 			} catch (IOException e) {
-				log.error(e);
+				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
 		}
@@ -112,7 +112,7 @@ public class WriteXsd<C> {
 			try {
 				return baos.toString("UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				log.error(e);
+				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
 		} else {
@@ -127,14 +127,14 @@ public class WriteXsd<C> {
 		
 		try
 		{
-			log.debug("writeToString()");
+			log.debug("\n"+"writeToString()");
 
 			jc = initJAXBContext();
 
-			log.debug("jc.createMarshaller();");
+			log.debug("\n"+"jc.createMarshaller();");
 			m = jc.createMarshaller();
 
-			log.debug("m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
+			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
 
 			if (namespacePrefixMapper != null)
@@ -149,10 +149,10 @@ public class WriteXsd<C> {
 			if (schemaLocation != null)
 				m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemaLocation);
 
-			log.debug("m.marshal( obj, os );");
+			log.debug("\n"+"m.marshal( obj, os );");
 			m.marshal( obj, os );
 		} catch (JAXBException e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		}
 	}
@@ -160,7 +160,7 @@ public class WriteXsd<C> {
 	protected JAXBContext initJAXBContext() throws JAXBException{
 		JAXBContext jc = null;
 
-		log.debug("Utente.package: "+persistentClass.getPackage().getName());
+		log.debug("\n"+"Utente.package: "+persistentClass.getPackage().getName());
 		jc = JAXBContext.newInstance(persistentClass.getPackage().getName());
 
 		return jc;
@@ -201,22 +201,22 @@ public class WriteXsd<C> {
 		ByteArrayOutputStream baos = null;
 		
 		try {
-			log.debug("write()");
+			log.debug("\n"+"write()");
 
-			log.debug("Utente.package: "+datiXml.getClass().getPackage().getName());
+			log.debug("\n"+"Utente.package: "+datiXml.getClass().getPackage().getName());
 			jc = JAXBContext.newInstance(datiXml.getClass().getPackage().getName());
 
-			log.debug("jc.createUnmarshaller()");
+			log.debug("\n"+"jc.createUnmarshaller()");
 			m = jc.createMarshaller();
 			
 			if (namespacePrefixMapper != null)
 				m.setProperty("com.sun.xml.bind.namespacePrefixMapper", namespacePrefixMapper);
 
-			log.debug("m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
+			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
 			
 			baos = new ByteArrayOutputStream();
-			log.debug("m.marshal( utente, fos )");
+			log.debug("\n"+"m.marshal( utente, fos )");
 			m.marshal( datiXml, baos );
 		} catch (PropertyException e) {
 			throw e;
@@ -259,7 +259,7 @@ public class WriteXsd<C> {
 		ByteArrayOutputStream baos = null;
 		
 		baos = (ByteArrayOutputStream) writeOutputStream(datiXml, namespacePrefixMapper);
-		log.info(baos.toString());
+		log.info("\n"+baos.toString());
 		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
