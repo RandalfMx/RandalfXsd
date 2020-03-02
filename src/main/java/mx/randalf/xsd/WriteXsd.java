@@ -22,9 +22,10 @@ import javax.xml.bind.Marshaller.Listener;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import mx.randalf.xsd.exception.XsdException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import mx.randalf.xsd.exception.XsdException;
 
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
@@ -37,7 +38,7 @@ public class WriteXsd<C> {
 	/**
 	 * Variabile utilizzata per loggare l'applicazione
 	 */
-	private static Logger log = Logger.getLogger(WriteXsd.class);
+	private static Logger log = LogManager.getLogger(WriteXsd.class);
 
 	protected Class<C> persistentClass;
 	
@@ -59,6 +60,11 @@ public class WriteXsd<C> {
 	 */
 	public void write(C obj, File fXml, NamespacePrefixMapper namespacePrefixMapper,
 			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation) throws XsdException{
+		write(obj, fXml, namespacePrefixMapper, listener, xmlAdapter, schemaLocation, true);
+
+	}
+	public void write(C obj, File fXml, NamespacePrefixMapper namespacePrefixMapper,
+			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation, Boolean jaxbFormattedOutput) throws XsdException{
 		FileOutputStream fos = null;
 		
 		try
@@ -70,7 +76,7 @@ public class WriteXsd<C> {
 				}
 			}
 			fos = new FileOutputStream(fXml);
-			write(obj, fos, namespacePrefixMapper, listener, xmlAdapter, schemaLocation);
+			write(obj, fos, namespacePrefixMapper, listener, xmlAdapter, schemaLocation, jaxbFormattedOutput);
 		} catch (FileNotFoundException e) {
 			log.error(e.getMessage(),e);
 			throw new XsdException(e.getMessage(), e);
@@ -91,11 +97,16 @@ public class WriteXsd<C> {
 
 	public String write(C obj, NamespacePrefixMapper namespacePrefixMapper,
 			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation) throws XsdException{
+		return write(obj, namespacePrefixMapper, listener, xmlAdapter, schemaLocation, true);
+	}
+
+	public String write(C obj, NamespacePrefixMapper namespacePrefixMapper,
+			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation, Boolean jaxbFormattedOutput) throws XsdException{
 		ByteArrayOutputStream baos = null;
 		
 		try {
 			baos = new ByteArrayOutputStream();
-			write(obj, baos, namespacePrefixMapper, listener, xmlAdapter, schemaLocation);
+			write(obj, baos, namespacePrefixMapper, listener, xmlAdapter, schemaLocation, jaxbFormattedOutput);
 		} catch (XsdException e) {
 			throw e;
 		} finally {
@@ -121,7 +132,7 @@ public class WriteXsd<C> {
 	}
 
 	public void write(C obj, OutputStream os, NamespacePrefixMapper namespacePrefixMapper,
-			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation) throws XsdException{
+			Listener listener, XmlAdapter<Object, Object> xmlAdapter, String schemaLocation, Boolean jaxbFormattedOutput) throws XsdException{
 		Marshaller m = null;
 		JAXBContext jc = null;
 		
@@ -134,8 +145,8 @@ public class WriteXsd<C> {
 			log.debug("\n"+"jc.createMarshaller();");
 			m = jc.createMarshaller();
 
-			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, "+jaxbFormattedOutput+");");
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, jaxbFormattedOutput);
 
 			if (namespacePrefixMapper != null)
 				m.setProperty("com.sun.xml.bind.namespacePrefixMapper", namespacePrefixMapper);
@@ -177,9 +188,9 @@ public class WriteXsd<C> {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public  OutputStream writeOutputStream(C datiXml) throws PropertyException, JAXBException, IOException, Exception
+	public  OutputStream writeOutputStream(C datiXml, Boolean jaxbFormattedOutput) throws PropertyException, JAXBException, IOException, Exception
 	{
-		return writeOutputStream(datiXml, null);
+		return writeOutputStream(datiXml, null, jaxbFormattedOutput);
 	}
 
 	/**
@@ -193,7 +204,7 @@ public class WriteXsd<C> {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public OutputStream writeOutputStream(C datiXml, NamespacePrefixMapper namespacePrefixMapper) throws PropertyException, 
+	public OutputStream writeOutputStream(C datiXml, NamespacePrefixMapper namespacePrefixMapper, Boolean jaxbFormattedOutput) throws PropertyException, 
 				JAXBException, IOException, Exception
 	{
 		Marshaller m = null;
@@ -212,8 +223,8 @@ public class WriteXsd<C> {
 			if (namespacePrefixMapper != null)
 				m.setProperty("com.sun.xml.bind.namespacePrefixMapper", namespacePrefixMapper);
 
-			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);");
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+			log.debug("\n"+"m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, "+jaxbFormattedOutput+");");
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, jaxbFormattedOutput);
 			
 			baos = new ByteArrayOutputStream();
 			log.debug("\n"+"m.marshal( utente, fos )");
@@ -237,9 +248,9 @@ public class WriteXsd<C> {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public  InputStream writeInputStream(C datiXml) throws PropertyException, JAXBException, IOException, Exception
+	public  InputStream writeInputStream(C datiXml, Boolean jaxbFormattedOutput) throws PropertyException, JAXBException, IOException, Exception
 	{
-		return writeInputStream(datiXml, null);
+		return writeInputStream(datiXml, null, jaxbFormattedOutput);
 	}
 
 	/**
@@ -253,12 +264,12 @@ public class WriteXsd<C> {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public  InputStream writeInputStream(C datiXml, NamespacePrefixMapper namespacePrefixMapper) throws PropertyException, 
+	public  InputStream writeInputStream(C datiXml, NamespacePrefixMapper namespacePrefixMapper, Boolean jaxbFormattedOutput) throws PropertyException, 
 			JAXBException, IOException, Exception
 	{
 		ByteArrayOutputStream baos = null;
 		
-		baos = (ByteArrayOutputStream) writeOutputStream(datiXml, namespacePrefixMapper);
+		baos = (ByteArrayOutputStream) writeOutputStream(datiXml, namespacePrefixMapper, jaxbFormattedOutput);
 		log.info("\n"+baos.toString());
 		return new ByteArrayInputStream(baos.toByteArray());
 	}

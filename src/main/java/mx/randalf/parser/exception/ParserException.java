@@ -10,7 +10,8 @@ import java.util.Vector;
 
 import mx.randalf.interfacException.exception.PubblicaException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -25,7 +26,7 @@ public class ParserException implements ErrorHandler {
 	/**
 	 * Questa variabile viene utilizzata per loggare l'applicazione
 	 */
-	private static Logger log = Logger.getLogger(ParserException.class);
+	private static Logger log = LogManager.getLogger(ParserException.class);
 
 	/**
 	 * Questa variabile viene utilizzata per indicare il numero di Errori

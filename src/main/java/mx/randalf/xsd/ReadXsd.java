@@ -16,9 +16,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mx.randalf.xsd.exception.XsdException;
 
-import org.apache.log4j.Logger;
 
 /**
  * @author massi
@@ -29,7 +31,7 @@ public class ReadXsd<C> extends WriteXsd<C> {
 	/**
 	 * Variabile utilizzata per loggare l'applicazione
 	 */
-	private static Logger log = Logger.getLogger(ReadXsd.class);
+	private static Logger log = LogManager.getLogger(ReadXsd.class);
 
 	/**
 	 * 
