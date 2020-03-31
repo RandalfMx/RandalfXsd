@@ -10,7 +10,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -67,13 +69,19 @@ public class ReadXsd<C> extends WriteXsd<C> {
 	}
 
 	public C read(File fXml) throws XsdException{
+		return read(fXml, "UTF-8");
+	}
+
+	public C read(File fXml, String encoding) throws XsdException{
 		FileInputStream fis = null;
+		Reader reader = null;
 		C obj = null;
 
 		try {
 			if (fXml.exists()){
 				fis = new FileInputStream(fXml);
-				obj = read(fis);
+				reader = new InputStreamReader(fis, encoding);
+				obj = read(reader);
 			}
 		} catch (FileNotFoundException e) {
 			log.error(e.getMessage(), e);
@@ -85,6 +93,9 @@ public class ReadXsd<C> extends WriteXsd<C> {
 			throw new XsdException(e.getMessage(), e);
 		} finally {
 			try {
+				if (reader != null){
+					reader.close();
+				}
 				if (fis != null){
 					fis.close();
 				}
@@ -92,6 +103,41 @@ public class ReadXsd<C> extends WriteXsd<C> {
 				log.error(e.getMessage(), e);
 				throw new XsdException(e.getMessage(), e);
 			}
+		}
+		return obj;
+	}
+
+	@SuppressWarnings("unchecked")
+	private C read(Reader reader) throws XsdException {
+		JAXBContext jc = null;
+		Unmarshaller u = null;
+		Object tmp = null;
+		C obj = null;
+
+		try
+		{
+			log.debug("\n"+"read(InputStream "+reader+")");
+			if (reader != null)
+			{
+				jc = initJAXBContext();
+
+				log.debug("\n"+"jc.createUnmarshaller");
+				u = jc.createUnmarshaller();
+
+				log.debug("\n"+"u.unmarchal("+reader+")");
+				tmp = u.unmarshal(reader);
+				obj = (C) tmp;
+			}
+		}
+		catch (JAXBException e)
+		{
+			log.error(e.getMessage(), e);
+			throw new XsdException(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			log.error(e.getMessage(),e);
+			throw new XsdException(e.getMessage(), e);
 		}
 		return obj;
 	}
