@@ -16,8 +16,7 @@ import java.util.Vector;
 import mx.randalf.interfacException.exception.PubblicaException;
 import mx.randalf.parser.exception.ParserException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
@@ -31,7 +30,7 @@ import org.xml.sax.SAXParseException;
  */
 public class Parser extends DOMParser {
 
-	private static Logger log = LogManager.getLogger(Parser.class);
+	private static Logger log = Logger.getLogger(Parser.class);
 
 	/**
 	 * Questo metodo viene invocato quando questa classe viene utilizzata come

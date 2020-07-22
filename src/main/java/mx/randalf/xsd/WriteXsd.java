@@ -22,8 +22,7 @@ import javax.xml.bind.Marshaller.Listener;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import mx.randalf.xsd.exception.XsdException;
 
@@ -38,7 +37,7 @@ public class WriteXsd<C> {
 	/**
 	 * Variabile utilizzata per loggare l'applicazione
 	 */
-	private static Logger log = LogManager.getLogger(WriteXsd.class);
+	private static Logger log = Logger.getLogger(WriteXsd.class);
 
 	protected Class<C> persistentClass;
 	
