@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.randalf.xsd</groupId>
 	<artifactId>RandalfXsd</artifactId>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.9</maven.compiler.source>
@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>mx.randalf.interfacException</groupId>
 			<artifactId>RandalfInterfaceException</artifactId>
-			<version>2.0.0</version>
+			<version>3.0.0</version>
 		</dependency>
     <dependency>
       <groupId>xerces</groupId>
@@ -49,6 +49,11 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 <!--
